@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
 import OptionsContainer from '../../../components/OptionsContainer';
 import { useState } from 'react';
+import ConfirmationContainer from '../../../components/ConfirmationContainer';
 
 export default function Payment() {
   const [isRemote, setIsRemote] = useState(false);
@@ -17,6 +18,7 @@ export default function Payment() {
         priceToFalse="250"
         setIsParam={setIsRemote}
       />
+      <ConfirmationContainer finalPrice={100} />
     </>
   );
 }
