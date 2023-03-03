@@ -5,6 +5,9 @@ import { useState } from 'react';
 
 export default function Payment() {
   const [isRemote, setIsRemote] = useState(false);
+  const [hasHotel, setHasHotel] = useState(false);
+  const [ticket, setTicket] = useState({ isRemote: null, hasHotel: null });
+  const [reserved, setReserved] = useState(false);
 
   return (
     <>
@@ -12,11 +15,23 @@ export default function Payment() {
       <OptionsContainer
         title="Primeiro, escolha sua modalidade de ingresso"
         optionToTrue="Online"
-        priceToTrue="100"
+        priceToTrue={100}
         optionToFalse="Presencial"
-        priceToFalse="250"
+        priceToFalse={250}
         setIsParam={setIsRemote}
       />
+      {isRemote ? (
+        ''
+      ) : (
+        <OptionsContainer
+          title="Ótimo! Agora escolha sua modalidade de hospedagem"
+          optionToTrue="Com Hotel"
+          priceToTrue={350}
+          optionToFalse="Sem Hotel"
+          priceToFalse={0}
+          setIsParam={setHasHotel}
+        />
+      )}
     </>
   );
 }

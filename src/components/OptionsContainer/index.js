@@ -56,7 +56,7 @@ export default function OptionsContainer({
 const OptionsContainerStyle = styled.div`
   height: 32%;
   width: auto;
-  margin-bottom: 30px;
+  margin: 40px 0 30px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
