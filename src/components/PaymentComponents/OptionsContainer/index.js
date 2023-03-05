@@ -8,6 +8,8 @@ export default function OptionsContainer({
   priceToTrue,
   priceToFalse,
   setIsParam,
+  ticket,
+  setTicket,
 }) {
   const [isClicked1, setIsClicked1] = useState('branco');
   const [isClicked2, setIsClicked2] = useState('branco');
@@ -56,10 +58,12 @@ export default function OptionsContainer({
 const OptionsContainerStyle = styled.div`
   height: 32%;
   width: auto;
-  margin: 40px 0 30px 0;
+  margin-top: 17px;
+  margin-bottom: 40px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  font-family: 'Roboto', sans-serif;
 
   h6 {
     color: #8e8e8e;
@@ -73,7 +77,8 @@ const Options = styled.div`
   height: auto;
   width: auto;
   display: flex;
-  margin-top: 17 px;
+  margin-top: 1px;
+
   .branco {
     border: 1px solid #cecece;
   }
@@ -83,8 +88,8 @@ const Options = styled.div`
 `;
 
 const Option = styled.div`
-  height: 160px;
-  width: 160px;
+  height: 145px;
+  width: 145px;
   display: flex;
   flex-direction: column;
   align-items: center;
