@@ -7,6 +7,7 @@ import { Typography } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import OptionsContainer from '../../../components/PaymentComponents/OptionsContainer';
 import TicketTypeReservation from '../../../components/PaymentComponents/TicketTypeChoice/TicketTypeReservation';
+import WithCreditCard from '../../../components/EndPayment/withCreditCard';
 import TicketPayment from '../../../components/PaymentComponents/TicketPayment/TicketPayment';
 
 export default function Payment() {
@@ -37,6 +38,7 @@ export default function Payment() {
   return (
     <>
       <StyledTypography variant="h4">Ingresso e Pagamento</StyledTypography>
+      {!reserved ? <TicketTypeReservation setReserved = {setReserved} /> : <WithCreditCard/>}
       {!reserved ? (
         <TicketTypeReservation
           setReserved={setReserved}
