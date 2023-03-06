@@ -1,16 +1,16 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import useToken from '../../../hooks/useToken';
 import OptionsContainer from '../OptionsContainer';
+import useSaveTicketReservation from '../../../hooks/api/useSaveTicketReservation';
+import { toast } from 'react-toastify';
 
 export default function TicketTypeReservation() {
-  const token = useToken();
-
   const [isRemote, setIsRemote] = useState(null);
   const [hasHotel, setHasHotel] = useState(null);
   const [ticket, setTicket] = useState({ price: 0, Remote: null, Hotel: null });
   const [completedTicket, setCompletedTicket] = useState(false);
+  const { saveTicketReservationLoading, saveTicketReservationError, saveTicketReservation } =
+    useSaveTicketReservation();
 
   useEffect(() => {
     setCompletedTicket(false);
@@ -34,15 +34,30 @@ export default function TicketTypeReservation() {
     }
   }, [isRemote, hasHotel]);
 
-  function reservation() {
-    const body = { ticketTypeId: 3 }; //chumbado online
-    const token = '1234';
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    axios.post('http://localhost:4000/tickets', body, config);
+  async function reservation(event) {
+    event.preventDefault();
+    let ticketTypeId = undefined;
+
+    if (ticket.price === 600) {
+      ticketTypeId = 1;
+    } else if (ticket.price === 250) {
+      ticketTypeId = 2;
+    } else if (ticket.price === 100) {
+      ticketTypeId = 3;
+    } else {
+      ticketTypeId = null;
+    }
+
+    if (ticketTypeId) {
+      const ticketReservationBody = { ticketTypeId };
+      try {
+        await saveTicketReservation(ticketReservationBody);
+        toast('Ingresso reservado com sucesso!');
+      } catch (err) {
+        console.log(err);
+        toast('Não foi possível fazer a sua reserva');
+      }
+    }
   }
   return (
     <>
@@ -71,7 +86,7 @@ export default function TicketTypeReservation() {
           <StyledP>
             Fechado! O total ficou em <strong>R${ticket.price}</strong>. Agora é só confirmar:
           </StyledP>
-          <StyledButton>
+          <StyledButton onClick={reservation}>
             <p> RESERVAR INGRESSO</p>
           </StyledButton>
         </>
@@ -98,6 +113,7 @@ const StyledButton = styled.button`
   margin-top: 17px;
   border: none;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
   p {
     /* width: 138px; */
     /* height: 16px; */
