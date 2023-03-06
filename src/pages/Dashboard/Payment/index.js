@@ -4,7 +4,7 @@ import NoEnrollmentDetected from '../../../components/NoEnrollment';
 import { getPersonalInformations } from '../../../services/enrollmentApi';
 import useToken from '../../../hooks/useToken';
 import { Typography } from '@material-ui/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import OptionsContainer from '../../../components/PaymentComponents/OptionsContainer';
 import TicketTypeReservation from '../../../components/PaymentComponents/TicketTypeChoice/TicketTypeReservation';
 
