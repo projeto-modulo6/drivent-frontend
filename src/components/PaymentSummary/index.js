@@ -15,25 +15,16 @@ export default function PaymentSummary() {
   const token = useToken();
 
   useEffect(() => {
-    getPersonalInformations(token)
-      .then((res) => {
-        console.log(res.data.id, 'RES.DATA.ID AQUI');
-        setEnrollmentId(res.data.id);
-        useEffect(() => {
-          getTicketByEnrollmentId(token, enrollmentId)
-            .then((res) => {
-              setPreco(res.data.price);
-              if (res.data.isRemote === true) {
-                setPresencial('Remoto');
-              }
-              if (res.data.includesHotel === false) {
-                setHotel('Sem hotel');
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }, []);
+    getTicketByEnrollmentId(token)
+      .then((resposta) => {
+        console.log(resposta, 'RESPOSTA AQUI a');
+        setPreco(resposta.TicketType.price);
+        if (resposta.TicketType.isRemote === true) {
+          setPresencial('Remoto');
+        }
+        if (resposta.TicketType.includesHotel === false) {
+          setHotel('Sem hotel');
+        }
       })
       .catch((err) => {
         console.log(err);
