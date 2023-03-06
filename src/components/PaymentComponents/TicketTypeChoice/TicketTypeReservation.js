@@ -34,8 +34,6 @@ export default function TicketTypeReservation() {
     }
   }, [isRemote, hasHotel]);
 
-  console.log(ticket);
-
   function reservation() {
     const body = { ticketTypeId: 3 }; //chumbado online
     const token = '1234';
