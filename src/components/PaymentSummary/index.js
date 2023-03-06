@@ -17,7 +17,6 @@ export default function PaymentSummary({ ticket }) {
   useEffect(() => {
     getTicketByEnrollmentId(token)
       .then((resposta) => {
-        console.log(resposta, 'RESPOSTA AQUI a');
         setPreco(resposta.TicketType.price);
         if (resposta.TicketType.isRemote === true) {
           setPresencial('Remoto');

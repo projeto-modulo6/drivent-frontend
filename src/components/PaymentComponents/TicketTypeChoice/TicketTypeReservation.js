@@ -51,12 +51,11 @@ export default function TicketTypeReservation({ ticket, setTicket, setReserved, 
       const ticketReservationBody = { ticketTypeId };
       try {
         const ticketObject = await saveTicketReservation(ticketReservationBody);
+        console.log(ticketObject);
         setTicketId(ticketObject.id);
         toast('Ingresso reservado com sucesso!');
         setReserved(true);
-        setReserved(true);
       } catch (err) {
-        console.log(err);
         toast('Não foi possível fazer a sua reserva');
       }
     }

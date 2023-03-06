@@ -1,11 +1,9 @@
 import styled from 'styled-components';
-import PaymentSummary from '../../../components/PaymentSummary';
 import NoEnrollmentDetected from '../../../components/NoEnrollment';
 import { getPersonalInformations } from '../../../services/enrollmentApi';
 import useToken from '../../../hooks/useToken';
 import { Typography } from '@material-ui/core';
 import { useState, useEffect } from 'react';
-import OptionsContainer from '../../../components/PaymentComponents/OptionsContainer';
 import TicketTypeReservation from '../../../components/PaymentComponents/TicketTypeChoice/TicketTypeReservation';
 import WithCreditCard from '../../../components/EndPayment/withCreditCard';
 import TicketPayment from '../../../components/PaymentComponents/TicketPayment/TicketPayment';
@@ -38,7 +36,6 @@ export default function Payment() {
   return (
     <>
       <StyledTypography variant="h4">Ingresso e Pagamento</StyledTypography>
-      {!reserved ? <TicketTypeReservation setReserved = {setReserved} /> : <WithCreditCard/>}
       {!reserved ? (
         <TicketTypeReservation
           setReserved={setReserved}
