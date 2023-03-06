@@ -1,10 +1,37 @@
 import styled from 'styled-components';
+import PaymentSummary from '../../../components/PaymentSummary';
+import NoEnrollmentDetected from '../../../components/NoEnrollment';
+import { getPersonalInformations } from '../../../services/enrollmentApi';
+import useToken from '../../../hooks/useToken';
 import { Typography } from '@material-ui/core';
 import OptionsContainer from '../../../components/OptionsContainer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default function Payment() {
   const [isRemote, setIsRemote] = useState(false);
+  const [enrollment, setEnrollment] = useState(true);
+  const token = useToken();
+
+  useEffect(() => {
+    getPersonalInformations(token)
+      .then((res) => {
+        setEnrollment(true);
+      })
+      .catch((err) => {
+        setEnrollment(false);
+      });
+  }, []);
+
+  if (enrollment === false) {
+    return (
+      <>
+        <NoEnrollmentDetected />
+      </>
+    );
+  }
 
   return (
     <>
