@@ -7,11 +7,14 @@ import { Typography } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import OptionsContainer from '../../../components/PaymentComponents/OptionsContainer';
 import TicketTypeReservation from '../../../components/PaymentComponents/TicketTypeChoice/TicketTypeReservation';
+import TicketPayment from '../../../components/PaymentComponents/TicketPayment/TicketPayment';
 
 export default function Payment() {
   const [reserved, setReserved] = useState(false);
   const [paid, setPaid] = useState(false);
   const [enrollment, setEnrollment] = useState(true);
+  const [ticketId, setTicketId] = useState(0);
+  const [ticket, setTicket] = useState({ price: 0, Remote: null, Hotel: null });
   const token = useToken();
 
   useEffect(() => {
@@ -34,7 +37,16 @@ export default function Payment() {
   return (
     <>
       <StyledTypography variant="h4">Ingresso e Pagamento</StyledTypography>
-      {!reserved ? <TicketTypeReservation /> : 'Adicionar AQUI o Componente de Pagamento'}
+      {!reserved ? (
+        <TicketTypeReservation
+          setReserved={setReserved}
+          setTicketId={setTicketId}
+          setTicket={setTicket}
+          ticket={ticket}
+        />
+      ) : (
+        <TicketPayment setPaid={setPaid} paid={paid} ticketId={ticketId} ticket={ticket} />
+      )}
     </>
   );
 }

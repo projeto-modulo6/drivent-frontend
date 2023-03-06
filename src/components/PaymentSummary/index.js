@@ -6,7 +6,7 @@ import { getTicketByEnrollmentId } from '../../services/ticketApi1';
 import styled from 'styled-components';
 import useToken from '../../hooks/useToken';
 
-export default function PaymentSummary() {
+export default function PaymentSummary({ ticket }) {
   const [preco, setPreco] = useState('');
   const [enrollmentId, setEnrollmentId] = useState('');
   const [presencial, setPresencial] = useState('Presencial');
@@ -47,7 +47,7 @@ export default function PaymentSummary() {
         <p>
           {presencial} + {hotel}
         </p>
-        <p>R$ {preco}</p>
+        <p>R$ {ticket.price}</p>
       </TicketSummary>
     </Container>
   );
