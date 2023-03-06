@@ -3,13 +3,19 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 export default function ConfirmationContainer({ finalPrice }) {
+  const navigate = useNavigate();
   return (
     <>
       <ConfirmationContainerStyle>
         <h6>
           Fechado! O total ficou em <span> R$ {finalPrice}</span>. Agora é só confirmar:
         </h6>
-        <ConfirmationButton>
+        <ConfirmationButton
+          onClick={() => {
+            //Navegar para a página de pagamento (ainda nao feita)
+            navigate('/enroll');
+          }}
+        >
           <p>RESERVAR INGRESSO</p>
         </ConfirmationButton>
       </ConfirmationContainerStyle>
@@ -43,7 +49,8 @@ const ConfirmationButton = styled.div`
   p {
     font-size: 14px;
     font-weight: 400;
-    font-family: 'Roboto', sans-serif;  
-}
+    font-family: 'Roboto', sans-serif;
+  }
   justify-content: center;
+  cursor: pointer;
 `;
