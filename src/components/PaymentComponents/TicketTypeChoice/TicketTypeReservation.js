@@ -4,10 +4,9 @@ import OptionsContainer from '../OptionsContainer';
 import useSaveTicketReservation from '../../../hooks/api/useSaveTicketReservation';
 import { toast } from 'react-toastify';
 
-export default function TicketTypeReservation({ setReserved }) {
+export default function TicketTypeReservation({ ticket, setTicket, setReserved, setTicketId }) {
   const [isRemote, setIsRemote] = useState(null);
   const [hasHotel, setHasHotel] = useState(null);
-  const [ticket, setTicket] = useState({ price: 0, Remote: null, Hotel: null });
   const [completedTicket, setCompletedTicket] = useState(false);
   const { saveTicketReservationLoading, saveTicketReservationError, saveTicketReservation } =
     useSaveTicketReservation();
@@ -51,12 +50,12 @@ export default function TicketTypeReservation({ setReserved }) {
     if (ticketTypeId) {
       const ticketReservationBody = { ticketTypeId };
       try {
-        console.log(ticketReservationBody);
-        await saveTicketReservation(ticketReservationBody);
+        const ticketObject = await saveTicketReservation(ticketReservationBody);
+        console.log(ticketObject);
+        setTicketId(ticketObject.id);
         toast('Ingresso reservado com sucesso!');
         setReserved(true);
       } catch (err) {
-        console.log(err);
         toast('Não foi possível fazer a sua reserva');
       }
     }
