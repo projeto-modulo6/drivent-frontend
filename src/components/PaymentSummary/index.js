@@ -6,7 +6,7 @@ import { getTicketByEnrollmentId } from '../../services/ticketApi1';
 import styled from 'styled-components';
 import useToken from '../../hooks/useToken';
 
-export default function PaymentSummary() {
+export default function PaymentSummary({ ticket }) {
   const [preco, setPreco] = useState('');
   const [enrollmentId, setEnrollmentId] = useState('');
   const [presencial, setPresencial] = useState('Presencial');
@@ -15,25 +15,15 @@ export default function PaymentSummary() {
   const token = useToken();
 
   useEffect(() => {
-    getPersonalInformations(token)
-      .then((res) => {
-        console.log(res.data.id, 'RES.DATA.ID AQUI');
-        setEnrollmentId(res.data.id);
-        useEffect(() => {
-          getTicketByEnrollmentId(token, enrollmentId)
-            .then((res) => {
-              setPreco(res.data.price);
-              if (res.data.isRemote === true) {
-                setPresencial('Remoto');
-              }
-              if (res.data.includesHotel === false) {
-                setHotel('Sem hotel');
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }, []);
+    getTicketByEnrollmentId(token)
+      .then((resposta) => {
+        setPreco(resposta.TicketType.price);
+        if (resposta.TicketType.isRemote === true) {
+          setPresencial('Remoto');
+        }
+        if (resposta.TicketType.includesHotel === false) {
+          setHotel('Sem hotel');
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -47,7 +37,7 @@ export default function PaymentSummary() {
         <p>
           {presencial} + {hotel}
         </p>
-        <p>R$ {preco}</p>
+        <p>R$ {ticket.price}</p>
       </TicketSummary>
     </Container>
   );
