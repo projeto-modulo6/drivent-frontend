@@ -1,3 +1,10 @@
+import styled from 'styled-components';
+import CardHotels from '../../../components/HotelsCard';
+
 export default function Hotel() {
-  return 'Hotel: Em breve!';
+  return (
+    <>
+      <CardHotels />
+    </>
+  );
 }
