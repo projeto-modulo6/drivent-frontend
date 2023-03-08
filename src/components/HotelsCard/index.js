@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-export default function CardHotels({ name, image }) {
+export default function CardHotels({ image, name }) {
   return (
     <>
       <CardHotelsStyle>
-        <img src="https://i2.wp.com/blogchicosoares.com/wp-content/uploads/2021/12/FLA.jpg?fit=636%2C371&ssl=1"></img>
-        <h1>Flamengo Resort</h1>
+        <img src={image}></img>
+        <h1>{name}</h1>
         <strong>Tipos de Acomodação</strong>
         <p>Single e Double</p>
         <strong>Vagas Disponíveis</strong>
