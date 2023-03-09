@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getPersonalInformations } from '../../services/enrollmentApi';
-import { getTicketByEnrollmentId } from '../../services/ticketApi1';
+import { getTicketByEnrollmentId } from '../../services/ticketApi';
 import styled from 'styled-components';
 import useToken from '../../hooks/useToken';
 
@@ -26,7 +26,7 @@ export default function PaymentSummary({ ticket }) {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.message);
       });
   }, []);
 
