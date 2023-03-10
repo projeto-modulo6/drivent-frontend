@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import RoomChoiceContainer from '../../../components/HotelsComponents/RoomChoiceContainer';
 import NoHotelDetected from '../../../components/NoHotel';
 import { useEffect } from 'react';
-import useGetTicket from '../../../hooks/api/useGetTicket';
 import useToken from '../../../hooks/useToken';
 import { getTicket } from '../../../services/ticketApi';
 import { getPersonalInformations } from '../../../services/enrollmentApi';
