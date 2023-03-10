@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import TicketTypeReservation from '../../../components/PaymentComponents/TicketTypeChoice/TicketTypeReservation';
 import WithCreditCard from '../../../components/EndPayment/withCreditCard';
 import TicketPayment from '../../../components/PaymentComponents/TicketPayment/TicketPayment';
+import { getTicketByEnrollmentId } from '../../../services/ticketApi';
 
 export default function Payment() {
   const [reserved, setReserved] = useState(false);
@@ -23,6 +24,25 @@ export default function Payment() {
       })
       .catch((err) => {
         setEnrollment(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    getTicketByEnrollmentId(token)
+      .then((res) => {
+        if (res.status === 'PAID') {
+          setPaid(true);
+        }
+        setTicketId(res.id);
+        setTicket({
+          price: res.TicketType.price,
+          Remote: res.TicketType.isRemote,
+          Hotel: res.TicketType.includesHotel,
+        });
+        setReserved(true);
+      })
+      .catch((err) => {
+        console.log(err.message);
       });
   }, []);
 
