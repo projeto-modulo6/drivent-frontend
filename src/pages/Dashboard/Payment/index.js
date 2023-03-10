@@ -25,9 +25,7 @@ export default function Payment() {
       .catch((err) => {
         setEnrollment(false);
       });
-  }, []);
 
-  useEffect(() => {
     getTicketByEnrollmentId(token)
       .then((res) => {
         if (res.status === 'PAID') {
