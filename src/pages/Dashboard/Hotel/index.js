@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import RoomChoiceContainer from '../../../components/HotelsComponents/RoomChoiceContainer';
 import NoHotelDetected from '../../../components/NoHotel';
 import { useEffect } from 'react';
-import useGetTicket from '../../../hooks/api/useGetTicket';
 import useToken from '../../../hooks/useToken';
 import { getTicket } from '../../../services/ticketApi';
 import { getPersonalInformations } from '../../../services/enrollmentApi';
@@ -14,7 +13,6 @@ export default function Hotel() {
   const [onlineTicket, setOnlineTicket] = useState(false);
   const [enrollment, setEnrollment] = useState(false);
   const [pickedHotel, setPickedHotel] = useState(true);
-
   const token = useToken();
 
   useEffect(() => {
@@ -24,11 +22,10 @@ export default function Hotel() {
           setOnlineTicket(true);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
 
     getPersonalInformations(token)
       .then((res) => {
-        console.log(res);
         setEnrollment(true);
       })
       .catch((err) => {
