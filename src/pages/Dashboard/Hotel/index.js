@@ -13,7 +13,6 @@ export default function Hotel() {
   const [onlineTicket, setOnlineTicket] = useState(false);
   const [enrollment, setEnrollment] = useState(false);
   const [pickedHotel, setPickedHotel] = useState(true);
-
   const token = useToken();
 
   useEffect(() => {
@@ -23,11 +22,10 @@ export default function Hotel() {
           setOnlineTicket(true);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
 
     getPersonalInformations(token)
       .then((res) => {
-        console.log(res);
         setEnrollment(true);
       })
       .catch((err) => {
