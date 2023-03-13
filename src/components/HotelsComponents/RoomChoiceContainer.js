@@ -5,15 +5,12 @@ import { HotelContext } from '../../contexts/HotelContext';
 import useHotelVacancy from '../../hooks/api/useHotelVacancy';
 import RoomChoiceButton from './RoomChoiceButton';
 
-
-export default function RoomChoiceContainer() {
+export default function RoomChoiceContainer({ hotelId }) {
   const { hotelVacancy } = useHotelVacancy();
   const [hotelInfo, setHotelInfo] = useState([]);
   const { chosenRoom } = useContext(HotelContext);
 
-
   useEffect(() => {
-    const hotelId = 1;
     async function getVacancy(hotelId) {
       try {
         const hotelInfo = await hotelVacancy(hotelId);

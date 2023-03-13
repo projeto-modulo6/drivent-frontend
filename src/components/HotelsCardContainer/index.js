@@ -12,6 +12,7 @@ export default function CardHotelsContainer({ setHotelId, setPickedHotel }) {
     async function getHotels() {
       try {
         const hotels = await chooseHotel(token);
+        console.log(hotels);
         setHotels(hotels);
       } catch (error) {
         console.log(error.message);
@@ -27,7 +28,13 @@ export default function CardHotelsContainer({ setHotelId, setPickedHotel }) {
       <h1>Primeiro, escolha seu hotel</h1>
       <HotelCardsContainerStyle>
         {hotels.map((item) => (
-          <CardHotels id={item.id} image={item.image} name={item.name} setHotelId={setHotelId} setPickedHotel={setPickedHotel}/>
+          <CardHotels
+            id={item.id}
+            image={item.image}
+            name={item.name}
+            setHotelId={setHotelId}
+            setPickedHotel={setPickedHotel}
+          />
         ))}
       </HotelCardsContainerStyle>
     </>
