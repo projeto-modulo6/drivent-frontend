@@ -19,7 +19,6 @@ export async function getBooking(token) {
 
   return response.data;
 }
-import api from './api';
 
 export async function postBooking(body, token) {
   const config = {
