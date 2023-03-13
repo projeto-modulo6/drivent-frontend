@@ -4,16 +4,16 @@ import _ from 'underscore';
 import { HotelContext } from '../../contexts/HotelContext';
 import useHotelVacancy from '../../hooks/api/useHotelVacancy';
 import RoomChoiceButton from './RoomChoiceButton';
-import { updateBooking } from '../../services/bookingApi';
-import useToken from '../../hooks/useToken';
+import usePostBooking from '../../hooks/api/usePostBooking';
+import { toast } from 'react-toastify';
 
-export default function RoomChoiceContainer() {
+export default function RoomChoiceContainer({ hotelId }) {
   const { hotelVacancy } = useHotelVacancy();
   const [hotelInfo, setHotelInfo] = useState([]);
   const { chosenRoom } = useContext(HotelContext);
+  const { postBooking } = usePostBooking();
 
   useEffect(() => {
-    const hotelId = 1;
     async function getVacancy(hotelId) {
       try {
         const hotelInfo = await hotelVacancy(hotelId);
@@ -27,9 +27,16 @@ export default function RoomChoiceContainer() {
     getVacancy(hotelId);
   }, []);
 
-  async function postOrPutBooking(event) {
+  async function postOrChangeBooking(event) {
     event.preventDefault();
     const body = { roomId: chosenRoom.id };
+    try {
+      await postBooking(body);
+      toast('Seu quarto foi reservado!');
+    } catch (err) {
+      /* eslint-disable-next-line no-console */
+      console.log(err);
+    }
   }
   return (
     <>
@@ -46,7 +53,7 @@ export default function RoomChoiceContainer() {
           />
         ))}
       </StyledContainer>
-      <StyledButton onClick={postOrPutBooking} disabled={chosenRoom.id === 0 ? true : false}>
+      <StyledButton onClick={postOrChangeBooking} disabled={chosenRoom.id === 0 ? true : false}>
         RESERVAR QUARTO
       </StyledButton>
     </>
