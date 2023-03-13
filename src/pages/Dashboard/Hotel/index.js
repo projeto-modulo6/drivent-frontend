@@ -15,6 +15,7 @@ export default function Hotel() {
   const [enrollment, setEnrollment] = useState(false);
   const [pickedHotel, setPickedHotel] = useState(false);
   const [hotelId, setHotelId] = useState([]);
+  const [bookingCompleted, setBookingCompleted] = useState(false);
 
   const token = useToken();
 
@@ -47,8 +48,14 @@ export default function Hotel() {
   return (
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-      <CardHotelsContainer setHotelId={setHotelId} setPickedHotel={setPickedHotel} />
-      {pickedHotel ? <RoomChoiceContainer hotelId={hotelId} /> : ''}
+      {bookingCompleted === false ? (
+        <>
+          <CardHotelsContainer setHotelId={setHotelId} setPickedHotel={setPickedHotel} />
+          {pickedHotel ? <RoomChoiceContainer hotelId={hotelId} setBookingCompleted={setBookingCompleted}/> : ''}
+        </>
+      ) : (
+        'Adicionar componente da confirmação da reserva'
+      )}
     </>
   );
 }

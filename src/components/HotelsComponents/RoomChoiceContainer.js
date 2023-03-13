@@ -7,7 +7,7 @@ import RoomChoiceButton from './RoomChoiceButton';
 import usePostBooking from '../../hooks/api/usePostBooking';
 import { toast } from 'react-toastify';
 
-export default function RoomChoiceContainer({ hotelId }) {
+export default function RoomChoiceContainer({ hotelId, setBookingCompleted }) {
   const { hotelVacancy } = useHotelVacancy();
   const [hotelInfo, setHotelInfo] = useState([]);
   const { chosenRoom } = useContext(HotelContext);
@@ -33,6 +33,7 @@ export default function RoomChoiceContainer({ hotelId }) {
     try {
       await postBooking(body);
       toast('Seu quarto foi reservado!');
+      setBookingCompleted(true);
     } catch (err) {
       /* eslint-disable-next-line no-console */
       console.log(err);
