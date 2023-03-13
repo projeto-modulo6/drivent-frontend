@@ -9,9 +9,6 @@ export default function RoomChoiceButton({ id, name, capacity, reserveCount, isC
   const [vacancyArr, setVacancyArr] = useState([]);
   const [roomState, setRoomState] = useState('available');
   const { chosenRoom, setChosenRoom } = useContext(HotelContext);
-  if (isChosen) {
-    console.log(chosenRoom);
-  }
 
   useEffect(() => {
     // define Room state
