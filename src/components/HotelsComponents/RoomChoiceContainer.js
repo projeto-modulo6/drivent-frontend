@@ -23,8 +23,6 @@ export default function RoomChoiceContainer({
   const { postBooking } = usePostBooking();
   const [bId, setBid] = useState(bookingId);
 
-  console.log(bId, 'bId');
-
   useEffect(() => {
     async function getVacancy(hotelId) {
       try {
@@ -37,18 +35,14 @@ export default function RoomChoiceContainer({
       }
     }
     getVacancy(hotelId);
-    async function getBookingId(token) {
-      try {
-        if (!bId) {
-          const bookingData = await getBookingId(token);
-          setBid(bookingData.id);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
 
-    getBookingId(token);
+    if (!bId) {
+      getBooking(token)
+        .then((res) => {
+          setBid(res.id);
+        })
+        .catch((err) => console.log(err));
+    }
   }, []);
 
   async function postOrChangeBooking(event) {
@@ -56,16 +50,13 @@ export default function RoomChoiceContainer({
     if (query === true) {
       const body = { roomId: chosenRoom.id };
       try {
-        console.log(bId);
         const response = await updateBooking(body, bId, token);
         setBookingId(response.bookingId);
         toast('Seu quarto foi reservado!');
         setBookingCompleted(true);
-        console.log('update booking feito');
         setQuery(false);
       } catch (err) {
         /* eslint-disable-next-line no-console */
-        console.log('caindo catch put booking');
         console.log(err);
       }
     } else {
@@ -77,7 +68,6 @@ export default function RoomChoiceContainer({
         setBookingCompleted(true);
       } catch (err) {
         /* eslint-disable-next-line no-console */
-        console.log('caindo catch post booking');
         console.log(err);
       }
     }
