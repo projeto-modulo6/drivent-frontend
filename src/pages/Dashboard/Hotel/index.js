@@ -40,7 +40,6 @@ export default function Hotel() {
         //setBooleanoDaPagina(true)
       })
       .catch((err) => {
-        console.log('caiu aqui');
         console.log(err);
       });
   });
@@ -56,7 +55,7 @@ export default function Hotel() {
   return (
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-      {pickedHotel ? <RoomChoiceContainer /> : ''}
+      {pickedHotel ? <RoomChoiceContainer hotelId={hotelId} /> : <CardHotelsContainer setHotelId={setHotelId} setPickedHotel={setPickedHotel}/>}
     </>
   );
 }
