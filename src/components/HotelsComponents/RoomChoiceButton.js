@@ -1,20 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IconContext } from 'react-icons';
 import styled from 'styled-components';
 
 import { HiUser, HiOutlineUser } from 'react-icons/hi';
+import { HotelContext } from '../../contexts/HotelContext';
 
-export default function RoomChoiceButton({
-  id,
-  name,
-  capacity,
-  reserveCount,
-  isChosen,
-  setChosenRoom,
-  setChosenRoomId,
-}) {
+export default function RoomChoiceButton({ id, name, capacity, reserveCount, isChosen }) {
   const [vacancyArr, setVacancyArr] = useState([]);
   const [roomState, setRoomState] = useState('available');
+  const { chosenRoom, setChosenRoom } = useContext(HotelContext);
+  if (isChosen) {
+    console.log(chosenRoom);
+  }
 
   useEffect(() => {
     // define Room state
@@ -26,6 +23,7 @@ export default function RoomChoiceButton({
     } else {
       setRoomState('available');
     }
+    console.log('free spots', name, freeSpots);
 
     // create vacancy array
     const tempArray = [];
@@ -40,7 +38,7 @@ export default function RoomChoiceButton({
     for (let i = 0; i < reserveCount; i++) {
       tempArray.push('taken');
     }
-
+    console.log('Temp Array', tempArray);
     // assign vacancy array to state
     setVacancyArr(tempArray);
   }, [reserveCount, isChosen]);
@@ -56,8 +54,7 @@ export default function RoomChoiceButton({
   }
 
   function reserveSpot() {
-    setChosenRoom(name);
-    setChosenRoomId(id);
+    setChosenRoom({ ...chosenRoom, id: id, name: name });
   }
 
   return (
