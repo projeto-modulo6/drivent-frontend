@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import _ from 'underscore';
+import { HotelContext } from '../../contexts/HotelContext';
 import useHotelVacancy from '../../hooks/api/useHotelVacancy';
 import RoomChoiceButton from './RoomChoiceButton';
 
 export default function RoomChoiceContainer() {
-  const { hotelVacancyLoading, hotelVacancyError, hotelVacancy } = useHotelVacancy();
+  const { hotelVacancy } = useHotelVacancy();
   const [hotelInfo, setHotelInfo] = useState([]);
-  const [chosenRoom, setChosenRoom] = useState('');
-  const [chosenRoomId, setChosenRoomId] = useState(0);
+  const { chosenRoom } = useContext(HotelContext);
 
   useEffect(() => {
     const hotelId = 1;
@@ -19,6 +18,7 @@ export default function RoomChoiceContainer() {
         const sortedInfo = _.sortBy(hotelInfo, 'id');
         setHotelInfo(sortedInfo);
       } catch (err) {
+        /* eslint-disable-next-line no-console */
         console.log(err);
       }
     }
@@ -27,11 +27,7 @@ export default function RoomChoiceContainer() {
 
   async function postBooking(event) {
     event.preventDefault();
-    if (chosenRoomId !== 0) {
-      const body = { roomId: chosenRoomId };
-    } else {
-      toast('Você deve escolher um quarto para fazer uma reserva.');
-    }
+    const body = { roomId: chosenRoom.id };
   }
   return (
     <>
@@ -44,13 +40,13 @@ export default function RoomChoiceContainer() {
             name={room.name}
             capacity={room.capacity}
             reserveCount={room._count.Booking}
-            isChosen={room.name === chosenRoom ? true : false}
-            setChosenRoom={setChosenRoom}
-            setChosenRoomId={setChosenRoomId}
+            isChosen={room.name === chosenRoom.name ? true : false}
           />
         ))}
       </StyledContainer>
-      <StyledButton onClick={postBooking}>RESERVAR QUARTO</StyledButton>
+      <StyledButton onClick={postBooking} disabled={chosenRoom.id === 0 ? true : false}>
+        RESERVAR QUARTO
+      </StyledButton>
     </>
   );
 }
