@@ -14,6 +14,7 @@ export default function Hotel() {
   const [onlineTicket, setOnlineTicket] = useState(false);
   const [enrollment, setEnrollment] = useState(false);
   const [pickedHotel, setPickedHotel] = useState(false);
+  const [hotelId, setHotelId] = useState([]);
   const token = useToken();
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export default function Hotel() {
   return (
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-      {pickedHotel ? <RoomChoiceContainer /> : <CardHotelsContainer />}
+      {pickedHotel ? <RoomChoiceContainer hotelId={hotelId} /> : <CardHotelsContainer setHotelId={setHotelId} setPickedHotel={setPickedHotel}/>}
     </>
   );
 }

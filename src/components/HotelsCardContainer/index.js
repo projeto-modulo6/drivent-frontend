@@ -4,7 +4,7 @@ import useToken from '../../hooks/useToken';
 import { chooseHotel } from '../../services/hotelApi';
 import CardHotels from '../HotelsCard';
 
-export default function CardHotelsContainer() {
+export default function CardHotelsContainer({ setHotelId, setPickedHotel }) {
   const token = useToken();
   const [hotels, setHotels] = useState([]);
 
@@ -27,7 +27,7 @@ export default function CardHotelsContainer() {
       <h1>Primeiro, escolha seu hotel</h1>
       <HotelCardsContainerStyle>
         {hotels.map((item) => (
-          <CardHotels image={item.image} name={item.name} />
+          <CardHotels id={item.id} image={item.image} name={item.name} setHotelId={setHotelId} setPickedHotel={setPickedHotel}/>
         ))}
       </HotelCardsContainerStyle>
     </>

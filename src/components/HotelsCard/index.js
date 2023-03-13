@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 
-export default function CardHotels({ image, name }) {
+export default function CardHotels({ id, image, name, setHotelId, setPickedHotel }) {
   return (
     <>
-      <CardHotelsStyle>
+      <CardHotelsStyle
+        onClick={() => {
+          setHotelId(id);
+          setPickedHotel(true);
+        }}
+      >
         <img src={image}></img>
         <h1>{name}</h1>
         <strong>Tipos de Acomodação</strong>

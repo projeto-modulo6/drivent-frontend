@@ -5,11 +5,12 @@ import _ from 'underscore';
 import useHotelVacancy from '../../hooks/api/useHotelVacancy';
 import RoomChoiceButton from './RoomChoiceButton';
 
-export default function RoomChoiceContainer() {
+export default function RoomChoiceContainer({ hotelId }) {
   const { hotelVacancyLoading, hotelVacancyError, hotelVacancy } = useHotelVacancy();
   const [hotelInfo, setHotelInfo] = useState([]);
   const [chosenRoom, setChosenRoom] = useState('');
   const [chosenRoomId, setChosenRoomId] = useState(0);
+  console.log(hotelId);
 
   useEffect(() => {
     const hotelId = 1;
