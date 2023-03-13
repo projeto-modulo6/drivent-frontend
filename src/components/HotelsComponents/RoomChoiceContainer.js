@@ -1,20 +1,18 @@
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import _ from 'underscore';
+import { HotelContext } from '../../contexts/HotelContext';
 import useHotelVacancy from '../../hooks/api/useHotelVacancy';
 import RoomChoiceButton from './RoomChoiceButton';
 import { updateBooking } from '../../services/bookingApi';
 import useToken from '../../hooks/useToken';
 
-export default function RoomChoiceContainer({ query, setQuery }) {
-  const { hotelVacancyLoading, hotelVacancyError, hotelVacancy } = useHotelVacancy();
-  const [hotelInfo, setHotelInfo] = useState([]);
-  const [chosenRoom, setChosenRoom] = useState('');
-  const [chosenRoomId, setChosenRoomId] = useState(0);
-  const [bookingId, setBookingId] = useState('');
 
-  const token = useToken();
+export default function RoomChoiceContainer() {
+  const { hotelVacancy } = useHotelVacancy();
+  const [hotelInfo, setHotelInfo] = useState([]);
+  const { chosenRoom } = useContext(HotelContext);
+
 
   useEffect(() => {
     const hotelId = 1;
@@ -24,6 +22,7 @@ export default function RoomChoiceContainer({ query, setQuery }) {
         const sortedInfo = _.sortBy(hotelInfo, 'id');
         setHotelInfo(sortedInfo);
       } catch (err) {
+        /* eslint-disable-next-line no-console */
         console.log(err);
       }
     }
@@ -32,23 +31,7 @@ export default function RoomChoiceContainer({ query, setQuery }) {
 
   async function postOrPutBooking(event) {
     event.preventDefault();
-    if (query === true) {
-      //fazer o put
-      const body = { roomId: chosenRoomId };
-      updateBooking(body, bookingId, token).catch(console.log('Não foi possivel fazer o update do booking'));
-    } else {
-      if (chosenRoomId !== 0) {
-        const body = { roomId: chosenRoomId };
-        //retornar o booking id
-      } else {
-        toast('Você deve escolher um quarto para fazer uma reserva.');
-      }
-    }
-    if (chosenRoomId !== 0) {
-      const body = { roomId: chosenRoomId };
-    } else {
-      toast('Você deve escolher um quarto para fazer uma reserva.');
-    }
+    const body = { roomId: chosenRoom.id };
   }
   return (
     <>
@@ -61,13 +44,13 @@ export default function RoomChoiceContainer({ query, setQuery }) {
             name={room.name}
             capacity={room.capacity}
             reserveCount={room._count.Booking}
-            isChosen={room.name === chosenRoom ? true : false}
-            setChosenRoom={setChosenRoom}
-            setChosenRoomId={setChosenRoomId}
+            isChosen={room.name === chosenRoom.name ? true : false}
           />
         ))}
       </StyledContainer>
-      <StyledButton onClick={postOrPutBooking}>RESERVAR QUARTO</StyledButton>
+      <StyledButton onClick={postBooking} disabled={chosenRoom.id === 0 ? true : false}>
+        RESERVAR QUARTO
+      </StyledButton>
     </>
   );
 }
