@@ -1,25 +1,24 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useToken from '../../hooks/useToken';
-import { getHotels } from '../../services/hotelApi';
+import { chooseHotel } from '../../services/hotelApi';
 import CardHotels from '../HotelsCard';
 
 export default function CardHotelsContainer() {
   const token = useToken();
-  const [hotels, setHotels] = useState([
-    {
-      name: 'Flamengo Resort',
-      image: 'https://i2.wp.com/blogchicosoares.com/wp-content/uploads/2021/12/FLA.jpg?fit=636%2C371&ssl=1',
-    },
-    {
-      name: 'Flamengo Palace',
-      image: 'http://multirio.rio.rj.gov.br/images/img_2017_02/rep200.jpg',
-    },
-    {
-      name: 'Flamengo World',
-      image: 'https://pbs.twimg.com/media/Fpbn9amXEAwiABT.jpg',
-    },
-  ]);
+  const [hotels, setHotels] = useState([]);
+
+  useEffect(() => {
+    async function getHotels() {
+      try {
+        const hotels = await chooseHotel(token);
+        setHotels(hotels);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    getHotels();
+  }, []);
 
   console.log(hotels);
 
