@@ -40,6 +40,7 @@ export default function Hotel() {
         //setBooleanoDaPagina(true)
       })
       .catch((err) => {
+        console.log('caiu aqui');
         console.log(err);
       });
   });

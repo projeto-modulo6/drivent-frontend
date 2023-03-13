@@ -7,12 +7,10 @@ import RoomChoiceButton from './RoomChoiceButton';
 import { updateBooking } from '../../services/bookingApi';
 import useToken from '../../hooks/useToken';
 
-
 export default function RoomChoiceContainer() {
   const { hotelVacancy } = useHotelVacancy();
   const [hotelInfo, setHotelInfo] = useState([]);
   const { chosenRoom } = useContext(HotelContext);
-
 
   useEffect(() => {
     const hotelId = 1;
