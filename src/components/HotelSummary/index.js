@@ -1,19 +1,44 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useLayoutEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useToken from '../../hooks/useToken';
+import { getBooking } from '../../services/bookingApi';
+import { getHotelVacancy } from '../../services/hotelApi';
 
-export default function HotelSummary({ setBooleanoDaPagina }) {
+export default function HotelSummary({ setBookingCompleted, setQuery }) {
   const token = useToken();
-
-  useEffect(() => {
-    console.log('Running!');
-  }, []);
+  const [roomData, setRoomData] = useState('');
+  const [hotelData, setHotelData] = useState([]);
 
   function backScreen() {
-    //setBooleanoDaPagina(true)
+    setBookingCompleted(false);
+    setQuery(true);
   }
+
+  useEffect(() => {
+    let hotelId;
+    getBooking(token)
+      .then((res) => {
+        setRoomData(res.Room);
+        hotelId = res.Room.hotelId;
+        getHotelVacancy(hotelId)
+          .then((res) => {
+            setHotelData(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    //getHotelVacancy(hotelId)
+  }, []);
+
+  const arr = hotelData.filter((room) => room.id === roomData.id);
+  console.log(arr, 'arr filter');
 
   return (
     <Container>

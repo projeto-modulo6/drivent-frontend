@@ -6,12 +6,24 @@ import useHotelVacancy from '../../hooks/api/useHotelVacancy';
 import RoomChoiceButton from './RoomChoiceButton';
 import usePostBooking from '../../hooks/api/usePostBooking';
 import { toast } from 'react-toastify';
+import { getBooking, updateBooking } from '../../services/bookingApi';
 
-export default function RoomChoiceContainer({ hotelId, setBookingCompleted }) {
+export default function RoomChoiceContainer({
+  hotelId,
+  setBookingCompleted,
+  query,
+  token,
+  setQuery,
+  bookingId,
+  setBookingId,
+}) {
   const { hotelVacancy } = useHotelVacancy();
   const [hotelInfo, setHotelInfo] = useState([]);
   const { chosenRoom } = useContext(HotelContext);
   const { postBooking } = usePostBooking();
+  const [bId, setBid] = useState(bookingId);
+
+  console.log(bId, 'bId');
 
   useEffect(() => {
     async function getVacancy(hotelId) {
@@ -25,18 +37,49 @@ export default function RoomChoiceContainer({ hotelId, setBookingCompleted }) {
       }
     }
     getVacancy(hotelId);
+    async function getBookingId(token) {
+      try {
+        if (!bId) {
+          const bookingData = await getBookingId(token);
+          setBid(bookingData.id);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getBookingId(token);
   }, []);
 
   async function postOrChangeBooking(event) {
     event.preventDefault();
-    const body = { roomId: chosenRoom.id };
-    try {
-      await postBooking(body);
-      toast('Seu quarto foi reservado!');
-      setBookingCompleted(true);
-    } catch (err) {
-      /* eslint-disable-next-line no-console */
-      console.log(err);
+    if (query === true) {
+      const body = { roomId: chosenRoom.id };
+      try {
+        console.log(bId);
+        const response = await updateBooking(body, bId, token);
+        setBookingId(response.bookingId);
+        toast('Seu quarto foi reservado!');
+        setBookingCompleted(true);
+        console.log('update booking feito');
+        setQuery(false);
+      } catch (err) {
+        /* eslint-disable-next-line no-console */
+        console.log('caindo catch put booking');
+        console.log(err);
+      }
+    } else {
+      const body = { roomId: chosenRoom.id };
+      try {
+        const response = await postBooking(body);
+        setBookingId(response.bookingId);
+        toast('Seu quarto foi reservado!');
+        setBookingCompleted(true);
+      } catch (err) {
+        /* eslint-disable-next-line no-console */
+        console.log('caindo catch post booking');
+        console.log(err);
+      }
     }
   }
   return (

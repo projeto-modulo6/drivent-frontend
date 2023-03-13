@@ -20,7 +20,6 @@ export default function RoomChoiceButton({ id, name, capacity, reserveCount, isC
     } else {
       setRoomState('available');
     }
-    console.log('free spots', name, freeSpots);
 
     // create vacancy array
     const tempArray = [];
@@ -35,7 +34,7 @@ export default function RoomChoiceButton({ id, name, capacity, reserveCount, isC
     for (let i = 0; i < reserveCount; i++) {
       tempArray.push('taken');
     }
-    console.log('Temp Array', tempArray);
+
     // assign vacancy array to state
     setVacancyArr(tempArray);
   }, [reserveCount, isChosen]);

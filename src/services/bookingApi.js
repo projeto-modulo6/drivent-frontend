@@ -11,7 +11,7 @@ export async function updateBooking(body, bookingId, token) {
 }
 
 export async function getBooking(token) {
-  const response = await api.put('/booking', {
+  const response = await api.get('/booking', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
