@@ -26,6 +26,8 @@ const CardHotelsStyle = styled.div`
   box-sizing: border-box;
   padding: 14px;
   font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+  margin-right: 19px;
   img {
     width: 168px;
     height: 109px;

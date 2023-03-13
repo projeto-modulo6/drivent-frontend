@@ -6,26 +6,30 @@ import CardHotels from '../HotelsCard';
 
 export default function CardHotelsContainer() {
   const token = useToken();
-  const [hotels, setHotels] = useState([]);
-  useEffect(() => {
-    getHotels(token)
-      .then((response) => {
-        setHotels(response.data);
-        console.log(response.data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+  const [hotels, setHotels] = useState([
+    {
+      name: 'Flamengo Resort',
+      image: 'https://i2.wp.com/blogchicosoares.com/wp-content/uploads/2021/12/FLA.jpg?fit=636%2C371&ssl=1',
+    },
+    {
+      name: 'Flamengo Palace',
+      image: 'http://multirio.rio.rj.gov.br/images/img_2017_02/rep200.jpg',
+    },
+    {
+      name: 'Flamengo World',
+      image: 'https://pbs.twimg.com/media/Fpbn9amXEAwiABT.jpg',
+    },
+  ]);
+
   console.log(hotels);
 
   return (
     <>
       <h1>Primeiro, escolha seu hotel</h1>
       <HotelCardsContainerStyle>
-        {hotels.map((value) => {
-          <CardHotels image={value.image} name={value.name} />;
-        })}
+        {hotels.map((item) => (
+          <CardHotels image={item.image} name={item.name} />
+        ))}
       </HotelCardsContainerStyle>
     </>
   );
@@ -33,7 +37,6 @@ export default function CardHotelsContainer() {
 
 const HotelCardsContainerStyle = styled.div`
   display: flex;
-  justify-content: space-between;
   padding-top: 36px;
   h1 {
     color: #8e8e8e;
