@@ -7,12 +7,14 @@ import { useEffect } from 'react';
 import useToken from '../../../hooks/useToken';
 import { getTicket } from '../../../services/ticketApi';
 import { getPersonalInformations } from '../../../services/enrollmentApi';
+import { getBooking } from '../../../services/bookingApi';
 import NoEnrollmentDetected from '../../../components/NoEnrollment';
 
 export default function Hotel() {
   const [onlineTicket, setOnlineTicket] = useState(false);
   const [enrollment, setEnrollment] = useState(false);
   const [pickedHotel, setPickedHotel] = useState(true);
+  const [query, setQuery] = useState(false);
   const token = useToken();
 
   useEffect(() => {
@@ -31,6 +33,14 @@ export default function Hotel() {
       .catch((err) => {
         console.log(err);
       });
+
+    getBooking(token)
+      .then((res) => {
+        //setBooleanoDaPagina(true)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
 
   if (onlineTicket) {
@@ -44,7 +54,7 @@ export default function Hotel() {
   return (
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-      {pickedHotel ? <RoomChoiceContainer /> : ''}
+      {pickedHotel ? <RoomChoiceContainer query={query} setQuery={setQuery} /> : ''}
     </>
   );
 }

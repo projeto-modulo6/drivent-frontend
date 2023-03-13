@@ -4,12 +4,17 @@ import styled from 'styled-components';
 import _ from 'underscore';
 import useHotelVacancy from '../../hooks/api/useHotelVacancy';
 import RoomChoiceButton from './RoomChoiceButton';
+import { updateBooking } from '../../services/bookingApi';
+import useToken from '../../hooks/useToken';
 
-export default function RoomChoiceContainer() {
+export default function RoomChoiceContainer({ query, setQuery }) {
   const { hotelVacancyLoading, hotelVacancyError, hotelVacancy } = useHotelVacancy();
   const [hotelInfo, setHotelInfo] = useState([]);
   const [chosenRoom, setChosenRoom] = useState('');
   const [chosenRoomId, setChosenRoomId] = useState(0);
+  const [bookingId, setBookingId] = useState('');
+
+  const token = useToken();
 
   useEffect(() => {
     const hotelId = 1;
@@ -25,8 +30,20 @@ export default function RoomChoiceContainer() {
     getVacancy(hotelId);
   }, []);
 
-  async function postBooking(event) {
+  async function postOrPutBooking(event) {
     event.preventDefault();
+    if (query === true) {
+      //fazer o put
+      const body = { roomId: chosenRoomId };
+      updateBooking(body, bookingId, token).catch(console.log('Não foi possivel fazer o update do booking'));
+    } else {
+      if (chosenRoomId !== 0) {
+        const body = { roomId: chosenRoomId };
+        //retornar o booking id
+      } else {
+        toast('Você deve escolher um quarto para fazer uma reserva.');
+      }
+    }
     if (chosenRoomId !== 0) {
       const body = { roomId: chosenRoomId };
     } else {
@@ -50,7 +67,7 @@ export default function RoomChoiceContainer() {
           />
         ))}
       </StyledContainer>
-      <StyledButton onClick={postBooking}>RESERVAR QUARTO</StyledButton>
+      <StyledButton onClick={postOrPutBooking}>RESERVAR QUARTO</StyledButton>
     </>
   );
 }
