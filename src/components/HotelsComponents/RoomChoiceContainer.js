@@ -48,7 +48,7 @@ export default function RoomChoiceContainer() {
           />
         ))}
       </StyledContainer>
-      <StyledButton onClick={postBooking} disabled={chosenRoom.id === 0 ? true : false}>
+      <StyledButton onClick={postOrPutBooking} disabled={chosenRoom.id === 0 ? true : false}>
         RESERVAR QUARTO
       </StyledButton>
     </>
