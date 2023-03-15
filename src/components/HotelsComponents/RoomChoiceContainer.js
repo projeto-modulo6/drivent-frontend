@@ -1,37 +1,75 @@
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import _ from 'underscore';
+import { HotelContext } from '../../contexts/HotelContext';
 import useHotelVacancy from '../../hooks/api/useHotelVacancy';
 import RoomChoiceButton from './RoomChoiceButton';
+import usePostBooking from '../../hooks/api/usePostBooking';
+import { toast } from 'react-toastify';
+import { getBooking, updateBooking } from '../../services/bookingApi';
 
-export default function RoomChoiceContainer({ hotelId }) {
-  const { hotelVacancyLoading, hotelVacancyError, hotelVacancy } = useHotelVacancy();
+export default function RoomChoiceContainer({
+  hotelId,
+  setBookingCompleted,
+  query,
+  token,
+  setQuery,
+  bookingId,
+  setBookingId,
+}) {
+  const { hotelVacancy } = useHotelVacancy();
   const [hotelInfo, setHotelInfo] = useState([]);
-  const [chosenRoom, setChosenRoom] = useState('');
-  const [chosenRoomId, setChosenRoomId] = useState(0);
-  console.log(hotelId);
+  const { chosenRoom } = useContext(HotelContext);
+  const { postBooking } = usePostBooking();
+  const [bId, setBid] = useState(bookingId);
 
   useEffect(() => {
-    const hotelId = 1;
     async function getVacancy(hotelId) {
       try {
         const hotelInfo = await hotelVacancy(hotelId);
         const sortedInfo = _.sortBy(hotelInfo, 'id');
         setHotelInfo(sortedInfo);
       } catch (err) {
+        /* eslint-disable-next-line no-console */
         console.log(err);
       }
     }
     getVacancy(hotelId);
+
+    if (!bId) {
+      getBooking(token)
+        .then((res) => {
+          setBid(res.id);
+        })
+        .catch((err) => console.log(err));
+    }
   }, []);
 
-  async function postBooking(event) {
+  async function postOrChangeBooking(event) {
     event.preventDefault();
-    if (chosenRoomId !== 0) {
-      const body = { roomId: chosenRoomId };
+    if (query === true) {
+      const body = { roomId: chosenRoom.id };
+      try {
+        const response = await updateBooking(body, bId, token);
+        setBookingId(response.bookingId);
+        toast('Seu quarto foi reservado!');
+        setBookingCompleted(true);
+        setQuery(false);
+      } catch (err) {
+        /* eslint-disable-next-line no-console */
+        console.log(err);
+      }
     } else {
-      toast('Você deve escolher um quarto para fazer uma reserva.');
+      const body = { roomId: chosenRoom.id };
+      try {
+        const response = await postBooking(body);
+        setBookingId(response.bookingId);
+        toast('Seu quarto foi reservado!');
+        setBookingCompleted(true);
+      } catch (err) {
+        /* eslint-disable-next-line no-console */
+        console.log(err);
+      }
     }
   }
   return (
@@ -45,13 +83,13 @@ export default function RoomChoiceContainer({ hotelId }) {
             name={room.name}
             capacity={room.capacity}
             reserveCount={room._count.Booking}
-            isChosen={room.name === chosenRoom ? true : false}
-            setChosenRoom={setChosenRoom}
-            setChosenRoomId={setChosenRoomId}
+            isChosen={room.name === chosenRoom.name ? true : false}
           />
         ))}
       </StyledContainer>
-      <StyledButton onClick={postBooking}>RESERVAR QUARTO</StyledButton>
+      <StyledButton onClick={postOrChangeBooking} disabled={chosenRoom.id === 0 ? true : false}>
+        RESERVAR QUARTO
+      </StyledButton>
     </>
   );
 }

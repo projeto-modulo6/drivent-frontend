@@ -9,7 +9,7 @@ export default function useGetTicket() {
     loading: getTicketLoading,
     error: getTicketError,
     act: getTicket,
-  } = useAsync((data) => ticketApi.getTicket(data, token), false);
+  } = useAsync(() => ticketApi.getTicket(token), false);
 
   return {
     getTicketLoading,

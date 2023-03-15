@@ -1,20 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IconContext } from 'react-icons';
 import styled from 'styled-components';
 
 import { HiUser, HiOutlineUser } from 'react-icons/hi';
+import { HotelContext } from '../../contexts/HotelContext';
 
-export default function RoomChoiceButton({
-  id,
-  name,
-  capacity,
-  reserveCount,
-  isChosen,
-  setChosenRoom,
-  setChosenRoomId,
-}) {
+export default function RoomChoiceButton({ id, name, capacity, reserveCount, isChosen }) {
   const [vacancyArr, setVacancyArr] = useState([]);
   const [roomState, setRoomState] = useState('available');
+  const { chosenRoom, setChosenRoom } = useContext(HotelContext);
 
   useEffect(() => {
     // define Room state
@@ -56,8 +50,7 @@ export default function RoomChoiceButton({
   }
 
   function reserveSpot() {
-    setChosenRoom(name);
-    setChosenRoomId(id);
+    setChosenRoom({ ...chosenRoom, id: id, name: name });
   }
 
   return (
