@@ -27,7 +27,6 @@ const ActivityComponentStyle = styled.div`
     font-weight: 700;
     padding-bottom: 6px;
   }
-  div{
-    
+  div {
   }
 `;
