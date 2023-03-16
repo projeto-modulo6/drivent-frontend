@@ -86,7 +86,6 @@ export default function Hotel() {
         <HotelSummary
           setBookingCompleted={setBookingCompleted}
           setQuery={setQuery}
-          bookingId={bookingId}
           hotelId={hotelId}
         />
       )}
