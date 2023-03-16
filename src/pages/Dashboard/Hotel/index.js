@@ -23,8 +23,6 @@ export default function Hotel() {
 
   const token = useToken();
 
-  console.log(bookingId, 'bookingId');
-
   useEffect(() => {
     getTicket(token)
       .then((res) => {
@@ -61,7 +59,6 @@ export default function Hotel() {
   if (!enrollment) {
     return <NoEnrollmentDetected />;
   }
-  console.log(bookingCompleted, 'bookingCompleted');
   return (
     <>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>

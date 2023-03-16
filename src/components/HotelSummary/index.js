@@ -38,7 +38,6 @@ export default function HotelSummary({ setBookingCompleted, setQuery, hotelId })
   }, []);
 
   const arr = hotelData.filter((room) => room.id === roomData.id);
-  console.log(arr, 'arr filter');
 
   return (
     <Container>

@@ -12,7 +12,6 @@ export default function CardHotelsContainer({ setHotelId, setPickedHotel }) {
     async function getHotels() {
       try {
         const hotels = await chooseHotel(token);
-        console.log(hotels);
         setHotels(hotels);
       } catch (error) {
         console.log(error.message);
@@ -20,8 +19,6 @@ export default function CardHotelsContainer({ setHotelId, setPickedHotel }) {
     }
     getHotels();
   }, []);
-
-  console.log(hotels);
 
   return (
     <>
