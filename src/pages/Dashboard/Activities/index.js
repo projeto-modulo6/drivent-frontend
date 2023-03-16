@@ -1,6 +1,7 @@
 import { Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import ActivityComponent from '../../../components/Activities/ActivityComponent';
 import NotPresentialTicket from '../../../components/NotPresentialTicket';
 import useGetTicket from '../../../hooks/api/useGetTicket';
 
@@ -29,6 +30,7 @@ export default function Activities() {
   return (
     <>
       <StyledTypography variant="h4">Escolha de Atividades</StyledTypography>
+      <ActivityComponent/>
     </>
   );
 }
