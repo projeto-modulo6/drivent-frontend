@@ -1,12 +1,14 @@
 import { Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import EventLocationContainer from '../../../components/ActivitiesContainer/EventSpaceContainer';
 import NotPresentialTicket from '../../../components/NotPresentialTicket';
 import useGetTicket from '../../../hooks/api/useGetTicket';
 
 export default function Activities() {
   const [ticketInfo, setTicketInfo] = useState('');
   const { getTicket } = useGetTicket();
+  const [hasDay, setHasDay] = useState(true);
 
   useEffect(() => {
     async function getUserTicket() {
@@ -29,6 +31,7 @@ export default function Activities() {
   return (
     <>
       <StyledTypography variant="h4">Escolha de Atividades</StyledTypography>
+      {hasDay ? <EventLocationContainer /> : ''}
     </>
   );
 }
