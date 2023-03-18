@@ -1,12 +1,14 @@
 import { Typography } from '@material-ui/core';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ActivityComponent from '../../../components/Activities/ActivityComponent';
+import ActivityDay from '../../../components/ActivityDay';
 import NotPresentialTicket from '../../../components/NotPresentialTicket';
 import useGetTicket from '../../../hooks/api/useGetTicket';
+import EventLocaleContainer from '../../../components/ActivitiesContainer/EventLocaleContainer';
 
 export default function Activities() {
   const [ticketInfo, setTicketInfo] = useState('');
+  const [dayId, setDayId] = useState(false);
   const { getTicket } = useGetTicket();
 
   useEffect(() => {
@@ -30,7 +32,8 @@ export default function Activities() {
   return (
     <>
       <StyledTypography variant="h4">Escolha de Atividades</StyledTypography>
-      <ActivityComponent/>
+      <ActivityDay dayId={dayId} setDayId={setDayId} />
+      {dayId !== false ? <EventLocaleContainer dayId={dayId} /> : ''}
     </>
   );
 }
