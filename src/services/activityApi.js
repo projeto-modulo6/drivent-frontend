@@ -33,3 +33,13 @@ export async function getLocaleActivitiesByDay(token, dayId, localeId) {
 
   return response.data;
 }
+
+export async function getUserActivitiesByActivityId(token, activityId) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await api.get(`/activity/useractivity/${activityId}`, config);
+  return response.data;
+}
