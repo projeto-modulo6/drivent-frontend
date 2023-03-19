@@ -10,6 +10,7 @@ export default function EventLocaleContainer({ dayId, setDayId }) {
   useEffect(() => {
     async function retrieveLocales() {
       let tempLocales = await getAllLocales();
+      console.log(tempLocales, 'TEMP LOCALES');
       tempLocales = tempLocales.map((entry) => {
         return { name: entry.name, id: entry.id };
       });

@@ -6,13 +6,12 @@ import ActivityButton from './ActivityButton';
 export default function LocaleContainer({ localeName, localeId, dayId }) {
   const [dayActivities, setDayActivities] = useState([]);
   const { getLocaleActivitiesByDay } = useGetLocaleActivitiesByDay();
-  console.log(dayActivities);
   useEffect(() => {
     async function retrieveDayActivities() {
       try {
         const activities = await getLocaleActivitiesByDay(dayId, localeId);
         const testArr = activities.map((act) => act.name);
-        console.log(testArr);
+        console.log(testArr, 'TESTARR');
         setDayActivities(activities);
       } catch (err) {
         console.log(err);
