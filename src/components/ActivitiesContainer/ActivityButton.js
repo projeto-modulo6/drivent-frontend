@@ -7,15 +7,19 @@ import { FaSignInAlt } from 'react-icons/fa';
 import { BiXCircle } from 'react-icons/bi';
 
 export default function ActivityButton({ id, activityName, seats, startTime, endTime }) {
-  let startHour = dayjs(startTime).format('HH:mm');
-  let endHour = dayjs(endTime).format('HH:mm');
   const [full, setFull] = useState(false);
   const [userActivitiesLength, setUserActivitiesLength] = useState();
   const token = useToken();
+
+  const start = dayjs(startTime);
+  const end = dayjs(endTime);
+  const startHour = start.format('HH:mm');
+  const endHour = end.format('HH:mm');
+  const duration = end.diff(start) / (1000 * 60 * 60);
+
   useEffect(() => {
     async function getUserActivities() {
       const userActivities = await getUserActivitiesByActivityId(token, id);
-      console.log(userActivities);
       let totalSeats = seats - userActivities.length;
       if (totalSeats === 0) {
         setFull(true);
@@ -26,7 +30,7 @@ export default function ActivityButton({ id, activityName, seats, startTime, end
   }, []);
 
   return (
-    <ActivityHolder>
+    <ActivityHolder h={`${80 * duration}px`}>
       <LeftInfo>
         <h1>{activityName}</h1>
         <p>
@@ -36,7 +40,10 @@ export default function ActivityButton({ id, activityName, seats, startTime, end
       <RightInfo>
         {' '}
         {full === true ? (
-          <> <BiXCircle fill='#CC6666' fontSize={25}/> <h1>Esgotado</h1></>
+          <>
+            {' '}
+            <BiXCircle fill="#CC6666" fontSize={25} /> <h1>Esgotado</h1>
+          </>
         ) : (
           <>
             {' '}
@@ -54,7 +61,7 @@ const ActivityHolder = styled.li`
   border: none;
   background-color: #f1f1f1;
   width: 265px;
-  height: 79px;
+  min-height: ${(props) => props.h};
   padding-top: 10px;
   padding-bottom: 9px;
   box-sizing: border-box;
@@ -99,7 +106,7 @@ const RightInfo = styled.div`
     padding-top: 4px;
   }
   h1 {
-    color: #CC6666;
+    color: #cc6666;
     font-size: 9px;
     font-weight: 400;
     padding-top: 4px;
