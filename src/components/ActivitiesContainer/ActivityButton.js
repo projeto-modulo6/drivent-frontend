@@ -1,9 +1,29 @@
 import dayjs from 'dayjs';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useToken from '../../hooks/useToken';
+import { getUserActivitiesByActivityId } from '../../services/activityApi';
+import { FaSignInAlt } from 'react-icons/fa';
+import { BiXCircle } from 'react-icons/bi';
 
 export default function ActivityButton({ id, activityName, seats, startTime, endTime }) {
   let startHour = dayjs(startTime).format('HH:mm');
   let endHour = dayjs(endTime).format('HH:mm');
+  const [full, setFull] = useState(false);
+  const [userActivitiesLength, setUserActivitiesLength] = useState();
+  const token = useToken();
+  useEffect(() => {
+    async function getUserActivities() {
+      const userActivities = await getUserActivitiesByActivityId(token, id);
+      console.log(userActivities);
+      let totalSeats = seats - userActivities.length;
+      if (totalSeats === 0) {
+        setFull(true);
+      }
+      setUserActivitiesLength(totalSeats);
+    }
+    getUserActivities();
+  }, []);
 
   return (
     <ActivityHolder>
@@ -13,7 +33,17 @@ export default function ActivityButton({ id, activityName, seats, startTime, end
           {startHour} - {endHour}
         </p>
       </LeftInfo>
-      <RightInfo> ícone </RightInfo>
+      <RightInfo>
+        {' '}
+        {full === true ? (
+          <> <BiXCircle fill='#CC6666' fontSize={25}/> <h1>Esgotado</h1></>
+        ) : (
+          <>
+            {' '}
+            <FaSignInAlt fill="#078632" fontSize={20} /> <p> {userActivitiesLength} Vagas</p>{' '}
+          </>
+        )}{' '}
+      </RightInfo>
     </ActivityHolder>
   );
 }
@@ -61,4 +91,17 @@ const RightInfo = styled.div`
   justify-content: center;
   align-items: center;
   width: 66px;
+
+  p {
+    color: #078632;
+    font-size: 9px;
+    font-weight: 400;
+    padding-top: 4px;
+  }
+  h1 {
+    color: #CC6666;
+    font-size: 9px;
+    font-weight: 400;
+    padding-top: 4px;
+  }
 `;
