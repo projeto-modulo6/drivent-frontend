@@ -12,15 +12,20 @@ import { FaSignInAlt } from 'react-icons/fa';
 import { BiXCircle } from 'react-icons/bi';
 import UserContext from '../../contexts/UserContext';
 
-export default function ActivityButton({ id, activityName, seats, startTime, endTime, userId, dayId, localeId }) {
-  let startHour = dayjs(startTime).format('HH:mm');
-  let endHour = dayjs(endTime).format('HH:mm');
+export default function ActivityButton({ id, activityName, seats, startTime, endTime }) {
   const [full, setFull] = useState(false);
   const [userActivitiesLength, setUserActivitiesLength] = useState();
   const [userActivity, setUserActivity] = useState('');
   const [userActivityId, setUserActivityId] = useState('');
   const [boolReserved, setBoolReserved] = useState(false);
   const token = useToken();
+
+  const start = dayjs(startTime);
+  const end = dayjs(endTime);
+  const startHour = start.format('HH:mm');
+  const endHour = end.format('HH:mm');
+  const duration = end.diff(start) / (1000 * 60 * 60);
+
   useEffect(() => {
     async function getUserActivities() {
       const get = await getLocaleActivitiesByDay(token, dayId, localeId);
@@ -57,7 +62,7 @@ export default function ActivityButton({ id, activityName, seats, startTime, end
   }
 
   return (
-    <ActivityHolder onClick={reserva} boolReserved={boolReserved}>
+    <ActivityHolder onClick={reserva} boolReserved={boolReserved} h={`${80 * duration}px`}>
       <LeftInfo>
         <h1>{activityName}</h1>
         <p>
@@ -88,7 +93,7 @@ const ActivityHolder = styled.li`
   border: none;
   background-color: ${(props) => (props.boolReserved ? '#D0FFDB' : '#f1f1f1')};
   width: 265px;
-  height: 79px;
+  min-height: ${(props) => props.h};
   padding-top: 10px;
   padding-bottom: 9px;
   box-sizing: border-box;
