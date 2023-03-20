@@ -10,7 +10,9 @@ import {
 } from '../../services/activityApi';
 import { FaSignInAlt } from 'react-icons/fa';
 import { BiXCircle } from 'react-icons/bi';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
 import UserContext from '../../contexts/UserContext';
+import { toast } from 'react-toastify';
 
 export default function ActivityButton({ id, activityName, seats, startTime, endTime, dayId, localeId }) {
   const [full, setFull] = useState(false);
@@ -41,7 +43,6 @@ export default function ActivityButton({ id, activityName, seats, startTime, end
       if (userActivities.length !== 0) {
         if (idDoUsuario === userActivities[0].user_id) {
           setBoolReserved(true);
-          console.log(userActivities[0].user_id, 'AQUI');
           setUserActivityId(userActivities[0].id);
         }
       }
@@ -53,6 +54,12 @@ export default function ActivityButton({ id, activityName, seats, startTime, end
     if (boolReserved === true) {
       await deleteUserActivity(token, userActivityId);
       setBoolReserved(false);
+      setFull(false);
+      return;
+    }
+
+    if (full === true) {
+      toast('Não há mais vagas para este evento');
       return;
     }
 
@@ -69,20 +76,28 @@ export default function ActivityButton({ id, activityName, seats, startTime, end
           {startHour} - {endHour}
         </p>
       </LeftInfo>
-      <RightInfo>
-        {' '}
-        {full === true ? (
+      {boolReserved === true ? (
+        <RightInfo>
           <>
-            {' '}
-            <BiXCircle fill="#CC6666" fontSize={25} /> <h1>Esgotado</h1>
+            <AiOutlineCheckCircle fill="#078632" fontSize={20} /> <p>Inscrito!</p>
           </>
-        ) : (
-          <>
-            {' '}
-            <FaSignInAlt fill="#078632" fontSize={20} /> <p> {userActivitiesLength} Vagas</p>{' '}
-          </>
-        )}{' '}
-      </RightInfo>
+        </RightInfo>
+      ) : (
+        <RightInfo>
+          {' '}
+          {full === true ? (
+            <>
+              {' '}
+              <BiXCircle fill="#CC6666" fontSize={25} /> <h1>Esgotado</h1>
+            </>
+          ) : (
+            <>
+              {' '}
+              <FaSignInAlt fill="#078632" fontSize={20} /> <p> {userActivitiesLength} Vagas</p>{' '}
+            </>
+          )}{' '}
+        </RightInfo>
+      )}
     </ActivityHolder>
   );
 }

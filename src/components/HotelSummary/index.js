@@ -4,27 +4,68 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useToken from '../../hooks/useToken';
 import { getBooking } from '../../services/bookingApi';
-import { getHotelVacancy } from '../../services/hotelApi';
+import { getHotelByHotelId, getHotelVacancy } from '../../services/hotelApi';
 
-export default function HotelSummary({ setBookingCompleted, setQuery, hotelId }) {
+export default function HotelSummary({ setBookingCompleted, setQuery, hotelId, setPickedHotel }) {
   const token = useToken();
   const [roomData, setRoomData] = useState('');
   const [hotelData, setHotelData] = useState([]);
+  const [hotelName, sethotelName] = useState('');
+  const [hotelImg, setHotelImg] = useState('');
+  const [roomDescription, setRoomDescription] = useState('');
+  const [roomInfo, setRoomInfo] = useState('');
+  const [roomName, setRoomName] = useState('');
 
   function backScreen() {
     setBookingCompleted(false);
     setQuery(true);
+    setPickedHotel(false);
   }
 
   useEffect(() => {
     let hotelId;
+
     getBooking(token)
-      .then((res) => {
-        setRoomData(res.Room);
-        hotelId = res.Room.hotelId;
+      .then((resposta) => {
+        setRoomData(resposta.Room);
+        hotelId = resposta.Room.hotelId;
         getHotelVacancy(hotelId)
           .then((res) => {
             setHotelData(res);
+            const arr = res.filter((room) => room.id === resposta.Room.id);
+            console.log(arr, 'ARR FILTER');
+
+            if (arr.length !== 0) {
+              setRoomName(arr[0].name);
+
+              if (arr[0]._count.Booking === 1) {
+                setRoomDescription('Apenas você');
+              }
+              if (arr[0]._count.Booking === 2) {
+                setRoomDescription('Você e mais um');
+              }
+              if (arr[0]._count.Booking === 3) {
+                setRoomDescription('Você e mais dois');
+              }
+              if (arr[0].capacity === 1) {
+                setRoomInfo('Single');
+              }
+              if (arr[0].capacity === 2) {
+                setRoomInfo('Double');
+              }
+              if (arr[0].capacity === 3) {
+                setRoomInfo('Triple');
+              }
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        getHotelByHotelId(token, hotelId)
+          .then((res) => {
+            console.log(res, 'RES');
+            sethotelName(res.name);
+            setHotelImg(res.image);
           })
           .catch((err) => {
             console.log(err);
@@ -33,22 +74,20 @@ export default function HotelSummary({ setBookingCompleted, setQuery, hotelId })
       .catch((err) => {
         console.log(err);
       });
-
-    //getHotelVacancy(hotelId)
   }, []);
-
-  const arr = hotelData.filter((room) => room.id === roomData.id);
 
   return (
     <Container>
       <TopTitle>Você já escolheu o seu quarto:</TopTitle>
       <TicketSummary>
-        <img src="https://cdn.pixabay.com/photo/2019/04/04/15/17/smartphone-4103051_1280.jpg"></img>
-        <HotelName>Drivent Resort</HotelName>
+        <img src={hotelImg}></img>
+        <HotelName>{hotelName}</HotelName>
         <Weight>Quarto reservado</Weight>
-        <NotWeight>101 (double)</NotWeight>
+        <NotWeight>
+          Quarto {roomName} ({roomInfo})
+        </NotWeight>
         <Weight>Pessoas no seu quarto:</Weight>
-        <NotWeight>Você e mais um</NotWeight>
+        <NotWeight>{roomDescription}</NotWeight>
       </TicketSummary>
       <ChangeRoomButton onClick={backScreen}>
         <p>TROCAR DE QUARTO</p>
