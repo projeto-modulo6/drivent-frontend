@@ -14,3 +14,13 @@ export async function chooseHotel(token) {
   const response = await api.get('/hotels', config);
   return response.data;
 }
+
+export async function getHotelByHotelId(token, hotelId) {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await api.get(`/hotels/${hotelId}`, config);
+  return response.data;
+}
