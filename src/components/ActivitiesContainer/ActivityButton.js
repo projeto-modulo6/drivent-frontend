@@ -11,6 +11,7 @@ import {
 import { FaSignInAlt } from 'react-icons/fa';
 import { BiXCircle } from 'react-icons/bi';
 import UserContext from '../../contexts/UserContext';
+import { toast } from 'react-toastify';
 
 export default function ActivityButton({ id, activityName, seats, startTime, endTime, dayId, localeId }) {
   const [full, setFull] = useState(false);
@@ -53,6 +54,11 @@ export default function ActivityButton({ id, activityName, seats, startTime, end
     if (boolReserved === true) {
       await deleteUserActivity(token, userActivityId);
       setBoolReserved(false);
+      return;
+    }
+
+    if(full === true){
+      toast('Não há mais vagas para este evento');
       return;
     }
 
