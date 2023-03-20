@@ -53,10 +53,11 @@ export default function ActivityButton({ id, activityName, seats, startTime, end
     if (boolReserved === true) {
       await deleteUserActivity(token, userActivityId);
       setBoolReserved(false);
+      setFull(false);
       return;
     }
 
-    if(full === true){
+    if (full === true) {
       toast('Não há mais vagas para este evento');
       return;
     }
