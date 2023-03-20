@@ -12,7 +12,7 @@ import { FaSignInAlt } from 'react-icons/fa';
 import { BiXCircle } from 'react-icons/bi';
 import UserContext from '../../contexts/UserContext';
 
-export default function ActivityButton({ id, activityName, seats, startTime, endTime }) {
+export default function ActivityButton({ id, activityName, seats, startTime, endTime, dayId, localeId }) {
   const [full, setFull] = useState(false);
   const [userActivitiesLength, setUserActivitiesLength] = useState();
   const [userActivity, setUserActivity] = useState('');
