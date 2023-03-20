@@ -6,7 +6,7 @@ import useToken from '../../hooks/useToken';
 import { getBooking } from '../../services/bookingApi';
 import { getHotelVacancy } from '../../services/hotelApi';
 
-export default function HotelSummary({ setBookingCompleted, setQuery }) {
+export default function HotelSummary({ setBookingCompleted, setQuery, hotelId }) {
   const token = useToken();
   const [roomData, setRoomData] = useState('');
   const [hotelData, setHotelData] = useState([]);

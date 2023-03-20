@@ -1,10 +1,11 @@
 import dayjs from 'dayjs';
 import styled from 'styled-components';
 
-export default function ButtonDay({ dayId, setDayId, getDay, setDaySelected, item }) {
+export default function ButtonDay({ dayId, setDayId, getDay, setDaySelected, item, setReRenderBool, reRenderBool }) {
   function select() {
     setDaySelected(true);
     setDayId(item.id);
+    setReRenderBool(!reRenderBool);
   }
   return (
     <>

@@ -2,13 +2,22 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useToken from '../../hooks/useToken';
-import { getUserActivitiesByActivityId } from '../../services/activityApi';
+import {
+  deleteUserActivity,
+  getLocaleActivitiesByDay,
+  getUserActivitiesByActivityId,
+  postUserActivity,
+} from '../../services/activityApi';
 import { FaSignInAlt } from 'react-icons/fa';
 import { BiXCircle } from 'react-icons/bi';
+import UserContext from '../../contexts/UserContext';
 
-export default function ActivityButton({ id, activityName, seats, startTime, endTime }) {
+export default function ActivityButton({ id, activityName, seats, startTime, endTime, dayId, localeId }) {
   const [full, setFull] = useState(false);
   const [userActivitiesLength, setUserActivitiesLength] = useState();
+  const [userActivity, setUserActivity] = useState('');
+  const [userActivityId, setUserActivityId] = useState('');
+  const [boolReserved, setBoolReserved] = useState(false);
   const token = useToken();
 
   const start = dayjs(startTime);
@@ -19,18 +28,41 @@ export default function ActivityButton({ id, activityName, seats, startTime, end
 
   useEffect(() => {
     async function getUserActivities() {
+      const get = await getLocaleActivitiesByDay(token, dayId, localeId);
+      const idDoUsuario = get.userId;
       const userActivities = await getUserActivitiesByActivityId(token, id);
       let totalSeats = seats - userActivities.length;
       if (totalSeats === 0) {
         setFull(true);
       }
       setUserActivitiesLength(totalSeats);
+      setUserActivity(userActivities);
+
+      if (userActivities.length !== 0) {
+        if (idDoUsuario === userActivities[0].user_id) {
+          setBoolReserved(true);
+          console.log(userActivities[0].user_id, 'AQUI');
+          setUserActivityId(userActivities[0].id);
+        }
+      }
     }
     getUserActivities();
-  }, []);
+  }, [boolReserved]);
+
+  async function reserva() {
+    if (boolReserved === true) {
+      await deleteUserActivity(token, userActivityId);
+      setBoolReserved(false);
+      return;
+    }
+
+    const post = await postUserActivity(token, id);
+    setUserActivityId(post.id);
+    setBoolReserved(true);
+  }
 
   return (
-    <ActivityHolder h={`${80 * duration}px`}>
+    <ActivityHolder onClick={reserva} boolReserved={boolReserved} h={`${80 * duration}px`}>
       <LeftInfo>
         <h1>{activityName}</h1>
         <p>
@@ -59,7 +91,7 @@ const ActivityHolder = styled.li`
   display: flex;
   border-radius: 5px;
   border: none;
-  background-color: #f1f1f1;
+  background-color: ${(props) => (props.boolReserved ? '#D0FFDB' : '#f1f1f1')};
   width: 265px;
   min-height: ${(props) => props.h};
   padding-top: 10px;

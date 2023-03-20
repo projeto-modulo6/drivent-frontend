@@ -9,6 +9,7 @@ import EventLocaleContainer from '../../../components/ActivitiesContainer/EventL
 export default function Activities() {
   const [ticketInfo, setTicketInfo] = useState('');
   const [dayId, setDayId] = useState(false);
+  const [reRenderBool, setReRenderBool] = useState(false);
   const { getTicket } = useGetTicket();
 
   useEffect(() => {
@@ -32,8 +33,8 @@ export default function Activities() {
   return (
     <>
       <StyledTypography variant="h4">Escolha de Atividades</StyledTypography>
-      <ActivityDay dayId={dayId} setDayId={setDayId} />
-      {dayId !== false ? <EventLocaleContainer dayId={dayId} /> : ''}
+      <ActivityDay setReRenderBool={setReRenderBool} reRenderBool={reRenderBool} dayId={dayId} setDayId={setDayId} />
+      {dayId !== false ? <EventLocaleContainer reRenderBool={reRenderBool} dayId={dayId} /> : ''}
     </>
   );
 }
