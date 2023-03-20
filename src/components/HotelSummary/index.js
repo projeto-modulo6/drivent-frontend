@@ -6,7 +6,7 @@ import useToken from '../../hooks/useToken';
 import { getBooking } from '../../services/bookingApi';
 import { getHotelByHotelId, getHotelVacancy } from '../../services/hotelApi';
 
-export default function HotelSummary({ setBookingCompleted, setQuery, hotelId }) {
+export default function HotelSummary({ setBookingCompleted, setQuery, hotelId, setPickedHotel }) {
   const token = useToken();
   const [roomData, setRoomData] = useState('');
   const [hotelData, setHotelData] = useState([]);
@@ -19,6 +19,7 @@ export default function HotelSummary({ setBookingCompleted, setQuery, hotelId })
   function backScreen() {
     setBookingCompleted(false);
     setQuery(true);
+    setPickedHotel(false);
   }
 
   useEffect(() => {
