@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-export default function NoEnrollmentDetected() {
+export default function NoEnrollmentDetected({ text }) {
   return (
     <Container>
       <Aviso>
-        <p>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</p>
+        <p>{text}</p>
       </Aviso>
     </Container>
   );
@@ -12,7 +12,7 @@ export default function NoEnrollmentDetected() {
 
 const Container = styled.div`
   width: 100%;
-  height: 90%;
+  height: 80%;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import useDateWithActivities from '../../hooks/api/useDateWithActivity';
 import ButtonDay from './ButtonDay';
 
-export default function ActivityDay({ dayId, setDayId }) {
+export default function ActivityDay({ dayId, setDayId, setReRenderBool, reRenderBool }) {
   const [daySelected, setDaySelected] = useState(false);
   const { dateWithActivities, dateWithActivitiesLoading, dateWithActivitiesError } = useDateWithActivities();
   const [activities, setActivities] = useState([]);
@@ -63,6 +63,8 @@ export default function ActivityDay({ dayId, setDayId }) {
               setDaySelected={setDaySelected}
               getDay={getDay}
               item={item}
+              setReRenderBool={setReRenderBool}
+              reRenderBool={reRenderBool}
             ></ButtonDay>
           ))}
         </Box>

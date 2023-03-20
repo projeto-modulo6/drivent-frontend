@@ -20,6 +20,7 @@ export default function Hotel() {
   const [bookingCompleted, setBookingCompleted] = useState(false);
   const [query, setQuery] = useState(false);
   const [bookingId, setBookingId] = useState('');
+  const [ticketPaid, setTicketPaid] = useState(false);
 
   const token = useToken();
 
@@ -28,6 +29,9 @@ export default function Hotel() {
       .then((res) => {
         if (res.TicketType.includesHotel === false) {
           setOnlineTicket(true);
+        }
+        if (res.status === 'PAID') {
+          setTicketPaid(true);
         }
       })
       .catch((err) => {});
@@ -52,12 +56,33 @@ export default function Hotel() {
       });
   });
 
+  if (!ticketPaid) {
+    return (
+      <>
+        <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
+        <NoEnrollmentDetected text={'Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem'} />
+      </>
+    );
+  }
+
   if (onlineTicket) {
-    return <NoHotelDetected />;
+    return (
+      <>
+        <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
+        <NoHotelDetected />
+      </>
+    );
   }
 
   if (!enrollment) {
-    return <NoEnrollmentDetected />;
+    return (
+      <>
+        <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
+        <NoEnrollmentDetected
+          text={'Você precisa completar sua inscrição e seu ingresso antes de prosseguir pra escolha de hotel'}
+        />
+      </>
+    );
   }
   return (
     <>
@@ -80,12 +105,7 @@ export default function Hotel() {
           )}
         </>
       ) : (
-        <HotelSummary
-          setBookingCompleted={setBookingCompleted}
-          setQuery={setQuery}
-          bookingId={bookingId}
-          hotelId={hotelId}
-        />
+        <HotelSummary setBookingCompleted={setBookingCompleted} setQuery={setQuery} hotelId={hotelId} />
       )}
     </>
   );

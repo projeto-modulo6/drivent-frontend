@@ -47,7 +47,10 @@ export default function Payment() {
   if (enrollment === false) {
     return (
       <>
-        <NoEnrollmentDetected />
+        <StyledTypography variant="h4">Ingresso e Pagamento</StyledTypography>
+        <NoEnrollmentDetected
+          text={'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso'}
+        />
       </>
     );
   }
