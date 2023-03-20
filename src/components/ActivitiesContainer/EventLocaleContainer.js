@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useGetAllLocales from '../../hooks/api/useGetLocales';
 import LocaleContainer from './LocaleContainer';
 
-export default function EventLocaleContainer({ dayId, setDayId }) {
+export default function EventLocaleContainer({ dayId, setDayId, reRenderBool }) {
   const { getAllLocales } = useGetAllLocales();
   const [locales, setLocales] = useState([]);
 
@@ -30,6 +30,7 @@ export default function EventLocaleContainer({ dayId, setDayId }) {
           localeName={locale.name}
           dayId={dayId}
           setDayId={setDayId}
+          reRenderBool={reRenderBool}
         />
       ))}
     </Container>

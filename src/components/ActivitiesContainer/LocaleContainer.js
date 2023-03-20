@@ -3,16 +3,16 @@ import styled from 'styled-components';
 import useGetLocaleActivitiesByDay from '../../hooks/api/useGetLocaleActivitiesByDay';
 import ActivityButton from './ActivityButton';
 
-export default function LocaleContainer({ localeName, localeId, dayId }) {
+export default function LocaleContainer({ localeName, localeId, dayId, reRenderBool }) {
   const [dayActivities, setDayActivities] = useState([]);
+  const [userId, setUserId] = useState('');
   const { getLocaleActivitiesByDay } = useGetLocaleActivitiesByDay();
   useEffect(() => {
     async function retrieveDayActivities() {
       try {
         const activities = await getLocaleActivitiesByDay(dayId, localeId);
-        const testArr = activities.map((act) => act.name);
-        console.log(testArr, 'TESTARR');
-        setDayActivities(activities);
+        setDayActivities(activities.activities);
+        setUserId(activities.userId);
       } catch (err) {
         console.log(err);
       }
@@ -20,6 +20,7 @@ export default function LocaleContainer({ localeName, localeId, dayId }) {
 
     retrieveDayActivities();
   }, [dayId]);
+
   return (
     <Locale>
       <LocaleTitle>{localeName}</LocaleTitle>
@@ -32,6 +33,10 @@ export default function LocaleContainer({ localeName, localeId, dayId }) {
             seats={activity.seats}
             startTime={activity.begin}
             endTime={activity.end}
+            userId={userId}
+            reRenderBool={reRenderBool}
+            dayId={dayId}
+            localeId={localeId}
           />
         ))}
       </ActivityContainer>
