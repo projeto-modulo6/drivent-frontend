@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,9 +7,15 @@ import EventInfoContext from '../../contexts/EventInfoContext';
 import NavigationBar from '../../components/Dashboard/NavigationBar';
 
 import DashboardLayout from '../../layouts/Dashboard';
+import OAuthContext from '../../contexts/OAuthContext';
 
 export default function Dashboard() {
   const { eventInfo } = useContext(EventInfoContext);
+  const { setOAuthData } = useContext(OAuthContext);
+
+  useEffect(() => {
+    setOAuthData({ tokenGitHub: '' });
+  }, []);
 
   return (
     <DashboardLayout background={eventInfo.backgroundImageUrl}>

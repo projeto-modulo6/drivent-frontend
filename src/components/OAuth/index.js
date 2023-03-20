@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 import qs from 'query-string';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import useSignInOAuth from '../../hooks/api/useSignInOAuth';
+import OAuthContext from '../../contexts/OAuthContext';
+import useGetTokenOAuth from '../../hooks/api/useGetTokenOAuth';
+import UserContext from '../../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 export function OAuth() {
-  const { signInOAuthLoading, signInOAuthError, signInOAuth } = useSignInOAuth();
   function redirectToGithub() {
     const GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
     const params = {
@@ -18,22 +21,6 @@ export function OAuth() {
     window.location.href = authorizationUrl;
   }
 
-  useEffect(async() => {
-    const { code } = qs.parseUrl(window.location.href).query;
-    if (code) {
-      console.log(code);
-      try {
-        const response = await signInOAuth(code);
-        const user = response.data;
-        console.log(response);
-        alert('você está logado, meu chapa! dá uma olhada no console!');
-        console.log(user);
-      } catch (err) {
-        alert('ops, deu algum xabú');
-        console.log('err', err);
-      }
-    }
-  }, []);
   return (
     <>
       <Button onClick={redirectToGithub}>

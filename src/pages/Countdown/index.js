@@ -7,16 +7,19 @@ import Page from '../../components/Page';
 import useIsDateAfter from '../../hooks/useIsDateAfter';
 
 import EventInfoContext from '../../contexts/EventInfoContext';
+import OAuthContext from '../../contexts/OAuthContext';
 
 export default function Countdown() {
   const { eventInfo, loadingEventInfo } = useContext(EventInfoContext);
   const navigate = useNavigate();
   const countdownOver = useIsDateAfter(eventInfo?.startsAt);
+  const { setOAuthData } = useContext(OAuthContext);
 
   useEffect(() => {
     if (countdownOver) {
       navigate('/enroll');
     }
+    setOAuthData({ tokenGitHub: '' });
   }, [countdownOver]);
 
   function onZero() {

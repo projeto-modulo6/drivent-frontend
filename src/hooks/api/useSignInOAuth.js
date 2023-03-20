@@ -4,8 +4,6 @@ import useToken from '../useToken';
 import * as OAuthApi from '../../services/oAuthApi';
 
 export default function useSignInOAuth() {
-  const token = useToken();
-
   const {
     loading: signInOAuthLoading,
     error: signInOAuthError,
