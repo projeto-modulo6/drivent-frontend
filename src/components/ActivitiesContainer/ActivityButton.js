@@ -42,7 +42,6 @@ export default function ActivityButton({ id, activityName, seats, startTime, end
       if (userActivities.length !== 0) {
         if (idDoUsuario === userActivities[0].user_id) {
           setBoolReserved(true);
-          console.log(userActivities[0].user_id, 'AQUI');
           setUserActivityId(userActivities[0].id);
         }
       }
@@ -104,6 +103,7 @@ const ActivityHolder = styled.li`
   padding-bottom: 9px;
   box-sizing: border-box;
   margin: 10px 11px;
+  cursor: pointer;
 `;
 
 const LeftInfo = styled.div`
