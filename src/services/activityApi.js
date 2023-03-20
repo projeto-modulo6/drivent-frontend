@@ -51,7 +51,7 @@ export async function postUserActivity(token, id) {
     },
   };
   const body = { name: 'name' };
-  console.log(token, 'token', config, 'config');
+
   const post = await api.post(`/activity/${id}`, body, config);
   return post.data;
 }
