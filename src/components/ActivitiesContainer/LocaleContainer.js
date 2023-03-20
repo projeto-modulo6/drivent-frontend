@@ -10,8 +10,6 @@ export default function LocaleContainer({ localeName, localeId, dayId }) {
     async function retrieveDayActivities() {
       try {
         const activities = await getLocaleActivitiesByDay(dayId, localeId);
-        const testArr = activities.map((act) => act.name);
-        console.log(testArr, 'TESTARR');
         setDayActivities(activities);
       } catch (err) {
         console.log(err);
@@ -58,4 +56,6 @@ const ActivityContainer = styled.ul`
   display: flex;
   flex-direction: column;
   border: 1px solid #d7d7d7;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
