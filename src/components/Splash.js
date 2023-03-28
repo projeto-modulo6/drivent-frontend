@@ -7,10 +7,10 @@ import driventLogo from '../assets/images/drivent.png';
 
 export default function Splash({ loading = false, message = '' }) {
   return (
-    <StyledPage background="#FA4098">
+    <StyledPage background="#87CEFA">
       <Grid>
         {loading && <StyledLoader color="#FFFFFF" height={26} width={26} type="Oval" />}
-        <img src={driventLogo} alt="Driven.t" />
+        <img src={driventLogo} alt="Transportes Rodrimar" />
       </Grid>
       {message && <Message>{message}</Message>}
     </StyledPage>
