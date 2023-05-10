@@ -20,6 +20,12 @@ export const Label = styled.h1`
   margin-bottom: 10px;
 `;
 
+export const LabelGitHub = styled.h1`
+  font-size: 15px;
+  margin-top: -15px;
+  margin-bottom: 20px;
+`;
+
 export const Row = styled.div`
   display: flex;
   flex-direction: column;
